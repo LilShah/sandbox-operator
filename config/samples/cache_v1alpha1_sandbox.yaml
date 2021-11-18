@@ -3,4 +3,4 @@ kind: SandBox
 metadata:
   name: sandbox-sample
 spec:
-  # Add fields here
+  name: SB-shahid-1

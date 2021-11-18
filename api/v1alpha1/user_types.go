@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
+//+kubectl:validation:Required
 package v1alpha1
 
 import (
@@ -28,14 +28,23 @@ type UserSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of User. Edit user_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Name    string `json:"name"`
+	OrgName string `json:"orgname"`
+	//+optional
+	//+kubebuilder:validation:Enum:={Engineering,QA,Operations}
+	DeptName string `json:"deptname"`
+	//+optional
+	//+kubebuilder:validation:Maximum:=5
+	//+kubebuilder:default:=1
+	SandBoxCount int `json:"sandboxcount"`
 }
 
 // UserStatus defines the observed state of User
 type UserStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+	UserID       int32 `json:"userid"`
+	SandBoxCount int32 `json:"sandboxcount"`
 }
 
 //+kubebuilder:object:root=true

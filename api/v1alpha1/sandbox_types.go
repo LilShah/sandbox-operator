@@ -28,14 +28,17 @@ type SandBoxSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of SandBox. Edit sandbox_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Name string `json:"name"`
+	//+optional
+	//+kubebuilder:validation:Enum:={T1}
+	Type string `json:"type"`
 }
 
 // SandBoxStatus defines the observed state of SandBox
 type SandBoxStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+	SandBoxID int32 `json:"sandboxid"`
 }
 
 //+kubebuilder:object:root=true
