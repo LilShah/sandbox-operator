@@ -1,0 +1,24 @@
+# permissions for end users to edit sandboxes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sandbox-editor-role
+rules:
+- apiGroups:
+  - cache.my.domain
+  resources:
+  - sandboxes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cache.my.domain
+  resources:
+  - sandboxes/status
+  verbs:
+  - get

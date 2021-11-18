@@ -1,0 +1,6 @@
+apiVersion: cache.my.domain/v1alpha1
+kind: SandBox
+metadata:
+  name: sandbox-sample
+spec:
+  # Add fields here
