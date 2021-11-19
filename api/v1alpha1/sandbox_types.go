@@ -38,7 +38,8 @@ type SandBoxSpec struct {
 type SandBoxStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-	SandBoxID int32 `json:"sandboxid"`
+	SandBoxID int32  `json:"sandboxid"`
+	Name      string `json:"name"`
 }
 
 //+kubebuilder:object:root=true
