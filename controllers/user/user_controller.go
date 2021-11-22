@@ -18,6 +18,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/go-logr/logr"
 	cachev1alpha1 "github.com/lilshah/sandbox-operator/api/v1alpha1"
@@ -63,7 +64,6 @@ func (r *UserReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 
 	// Fetch the User userInstance
 	userInstance := &cachev1alpha1.User{}
-	sandboxInstance := &cachev1alpha1.SandBox{}
 	err := r.Get(ctx, req.NamespacedName, userInstance)
 	if err != nil {
 		if errors.IsNotFound(err) {
@@ -76,15 +76,17 @@ func (r *UserReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 		log.Error(err, "unable to fetch User")
 		return ctrl.Result{}, err
 	}
+
 	// Check if the SandBox instance is marked to be deleted, which is
 	// indicated by the deletion timestamp being set.
 	isUserMarkedToBeDeleted := userInstance.GetDeletionTimestamp() != nil
 	if isUserMarkedToBeDeleted {
-		log.Info("User %b is marked to be deleted, waiting for finalizers", req.Name)
+		log.Info(fmt.Sprintf("User %s is marked to be deleted, waiting for finalizers", req.Name))
 		if finalizerUtil.HasFinalizer(userInstance, UserFinalizer) {
-			return r.handleDelete(ctx, req, userInstance, sandboxInstance)
+			return r.handleDelete(ctx, req, userInstance)
 		}
 	}
+
 	// Add finalizer if not present
 	if !finalizerUtil.HasFinalizer(userInstance, UserFinalizer) {
 		log.Info("Adding finalizer for SandBox: " + req.Name)
@@ -98,7 +100,7 @@ func (r *UserReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.
 	// If the User instance is not marked to be deleted, then it must be
 	// created or updated, so enqueue a reconcile request.
 
-	return r.handleCreateUpdate(ctx, req, userInstance, sandboxInstance)
+	return r.handleCreateUpdate(ctx, req, userInstance)
 }
 
 // SetupWithManager sets up the controller with the Manager.

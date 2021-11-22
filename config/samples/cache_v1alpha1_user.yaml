@@ -1,10 +1,10 @@
 apiVersion: cache.my.domain/v1alpha1
 kind: User
 metadata:
-  name: user-sample
+  name: shahids
 spec:
-  name: shahid
+  name: shahids
   orgname: stakater
-  deptname: devops
-  sandboxcount: 2
+  deptname: QA
+  sandboxcount: 6
 

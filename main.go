@@ -24,15 +24,15 @@ import (
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
+	cachev1alpha1 "github.com/lilshah/sandbox-operator/api/v1alpha1"
+	sandboxController "github.com/lilshah/sandbox-operator/controllers/sandbox"
+	userController "github.com/lilshah/sandbox-operator/controllers/user"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
-
-	cachev1alpha1 "github.com/lilshah/sandbox-operator/api/v1alpha1"
-	"github.com/lilshah/sandbox-operator/controllers"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -78,20 +78,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = (&controllers.SandBoxReconciler{
-		Client: mgr.GetClient(),
-		Log:    ctrl.Log.WithName("controllers").WithName("SandBox"),
-		Scheme: mgr.GetScheme(),
-	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "SandBox")
-		os.Exit(1)
-	}
-	if err = (&controllers.UserReconciler{
+	if err = (&userController.UserReconciler{
 		Client: mgr.GetClient(),
 		Log:    ctrl.Log.WithName("controllers").WithName("User"),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "User")
+		os.Exit(1)
+	}
+	if err = (&sandboxController.SandBoxReconciler{
+		Client: mgr.GetClient(),
+		Log:    ctrl.Log.WithName("controllers").WithName("SandBox"),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "SandBox")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

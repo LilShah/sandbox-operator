@@ -18,6 +18,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -82,7 +83,7 @@ func (r *SandBoxReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ct
 	// indicated by the deletion timestamp being set.
 	isSandBoxMarkedToBeDeleted := instance.GetDeletionTimestamp() != nil
 	if isSandBoxMarkedToBeDeleted {
-		log.Info("SandBox %b is marked to be deleted, waiting for finalizers", req.Name)
+		log.Info(fmt.Sprintf("SandBox %s is marked to be deleted, waiting for finalizers", req.Name))
 		if finalizerUtil.HasFinalizer(instance, SandBoxFinalizer) {
 			return r.handleDelete(ctx, req, instance)
 		}
