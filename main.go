@@ -24,9 +24,6 @@ import (
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
-	cachev1alpha1 "github.com/lilshah/sandbox-operator/api/v1alpha1"
-	sandboxController "github.com/lilshah/sandbox-operator/controllers/sandbox"
-	userController "github.com/lilshah/sandbox-operator/controllers/user"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
