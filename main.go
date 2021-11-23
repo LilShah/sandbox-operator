@@ -33,6 +33,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+
+	cachev1alpha1 "github.com/lilshah/sandbox-operator/api/v1alpha1"
+	sandboxController "github.com/lilshah/sandbox-operator/controllers/sandbox"
+	userController "github.com/lilshah/sandbox-operator/controllers/user"
 	//+kubebuilder:scaffold:imports
 )
 

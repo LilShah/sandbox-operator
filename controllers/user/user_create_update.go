@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"time"
 
 	"github.com/lilshah/sandbox-operator/api/v1alpha1"
 	reconcilerUtil "github.com/stakater/operator-utils/util/reconciler"
@@ -33,12 +32,13 @@ func (r *UserReconciler) handleCreateUpdate(ctx context.Context, req ctrl.Reques
 		if err != nil {
 			if errors.IsAlreadyExists(err) {
 				log.Info(fmt.Sprintf("Sandbox \"%s\" already exists for user \"%s\"", sandboxInstance.ObjectMeta.Name, user.ObjectMeta.Name))
-				return reconcilerUtil.RequeueAfter(60 * time.Second)
+				continue
+				// return reconcilerUtil.RequeueAfter(60 * time.Second)
 			}
 			log.Error(err, "Failed to create sandbox for user: "+user.ObjectMeta.Name)
 			return reconcilerUtil.RequeueWithError(err)
 		}
 	}
 
-	return reconcilerUtil.RequeueAfter(60 * time.Second)
+	return reconcilerUtil.ManageSuccess(r.Client, user)
 }
